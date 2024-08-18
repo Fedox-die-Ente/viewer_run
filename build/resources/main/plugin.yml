@@ -1,0 +1,14 @@
+name: ViewerRun
+version: '1.0'
+main: me.fedox.viewerrun.ViewerRun
+api-version: '1.21'
+
+commands:
+  setcreator:
+  start:
+  queue:
+  setspawn:
+  pause:
+  continue:
+  forceskip:
+  gm:

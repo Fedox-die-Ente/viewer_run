@@ -1,0 +1,12 @@
+Flocki:
+  Queue:
+    RotationTime:
+  Location:
+    World:
+    X:
+    Y:
+    Z:
+    Yaw:
+    Pitch:
+  Player:
+    Creator:
