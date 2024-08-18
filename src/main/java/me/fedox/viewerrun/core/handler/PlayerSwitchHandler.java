@@ -15,12 +15,22 @@ import static me.fedox.viewerrun.utils.LocationUtils.teleportToSpawn;
 import static me.fedox.viewerrun.utils.PlayerUtils.getMaxHealth;
 import static me.fedox.viewerrun.utils.PlayerUtils.setMaxHealth;
 
+/**
+ * Handles the switching of players in the VRModel.
+ */
 public class PlayerSwitchHandler {
+
+    /**
+     * Constructs a PlayerSwitchHandler and registers a PlayerChangedListener to the VRModel.
+     *
+     * @param plugin the ViewerRun plugin instance
+     * @param model the VRModel instance
+     */
     public PlayerSwitchHandler(ViewerRun plugin, VRModel model) {
         model.addListener(new PlayerChangedListener() {
             @Override
             public void onCreatorChanged(Player creator) {
-
+                // No implementation needed for creator change
             }
 
             @Override
@@ -61,6 +71,12 @@ public class PlayerSwitchHandler {
         });
     }
 
+    /**
+     * Synchronizes the inventory between the last viewer and the new viewer.
+     *
+     * @param lastViewer the previous viewer player
+     * @param viewer the new viewer player
+     */
     private void syncInventory(Player lastViewer, Player viewer) {
         viewer.getInventory().clear();
 
@@ -74,6 +90,12 @@ public class PlayerSwitchHandler {
         debug("Switched inventory between " + lastViewer.getName() + " and " + viewer.getName() + " (new viewer)");
     }
 
+    /**
+     * Synchronizes the stats (health and food level) between the last viewer and the new viewer.
+     *
+     * @param lastViewer the previous viewer player
+     * @param viewer the new viewer player
+     */
     private void syncStats(Player lastViewer, Player viewer) {
         viewer.setFoodLevel(lastViewer.getFoodLevel());
         setMaxHealth(viewer, getMaxHealth(lastViewer));
@@ -86,6 +108,12 @@ public class PlayerSwitchHandler {
         debug("Switched health between " + lastViewer.getName() + " and " + viewer.getName() + " (new viewer)");
     }
 
+    /**
+     * Synchronizes the potion effects between the last viewer and the new viewer.
+     *
+     * @param lastViewer the previous viewer player
+     * @param viewer the new viewer player
+     */
     private void syncPotionEffects(Player lastViewer, Player viewer) {
         new ArrayList<>(lastViewer.getActivePotionEffects()).forEach(viewer::addPotionEffect);
         lastViewer.clearActivePotionEffects();

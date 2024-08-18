@@ -8,8 +8,20 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+/**
+ * Command executor for the GM (GameMode) command in the ViewerRun plugin.
+ */
 public class GMCommand implements CommandExecutor {
 
+    /**
+     * Executes the GM command.
+     *
+     * @param sender the sender of the command
+     * @param command the command that was executed
+     * @param label the alias of the command that was used
+     * @param args the arguments passed to the command
+     * @return true if the command was successful, false otherwise
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("viewerrun.gamemode")) {

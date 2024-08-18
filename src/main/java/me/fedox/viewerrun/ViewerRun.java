@@ -17,6 +17,10 @@ import java.util.logging.Level;
 import static me.fedox.viewerrun.utils.Constants.CONFIG_CREATOR;
 import static me.fedox.viewerrun.utils.Constants.CONFIG_CREATOR_UUID;
 
+/**
+ * Main class for the ViewerRun plugin.
+ * Extends JavaPlugin to integrate with the Bukkit API.
+ */
 public final class ViewerRun extends JavaPlugin {
     @Getter
     private static ViewerRun instance;
@@ -33,6 +37,10 @@ public final class ViewerRun extends JavaPlugin {
     @Setter
     public static Player viewer;
 
+    /**
+     * Called when the plugin is enabled.
+     * Initializes the plugin, loads the configuration, and registers commands and listeners.
+     */
     @Override
     public void onEnable() {
         instance = this;
@@ -58,11 +66,18 @@ public final class ViewerRun extends JavaPlugin {
         registerListener();
     }
 
+    /**
+     * Called when the plugin is disabled.
+     * Contains logic for shutting down the plugin.
+     */
     @Override
     public void onDisable() {
         // Plugin shutdown logic
     }
 
+    /**
+     * Registers all commands for the plugin.
+     */
     private void registerCommands() {
         getCommand("setcreator").setExecutor(new SetCreatorCommand(this));
         getCommand("start").setExecutor(new StartCommand(model));
@@ -75,6 +90,9 @@ public final class ViewerRun extends JavaPlugin {
         getCommand("tp").setExecutor(new TPCommand());
     }
 
+    /**
+     * Registers all event listeners for the plugin.
+     */
     private void registerListener() {
         var pm = Bukkit.getPluginManager();
 
@@ -85,6 +103,10 @@ public final class ViewerRun extends JavaPlugin {
         pm.registerEvents(new EnderDragonShitListener(model), this);
     }
 
+    /**
+     * Loads the plugin configuration.
+     * Copies default values and saves the configuration.
+     */
     private void loadConfig() {
         getConfig().options().copyDefaults(true);
         saveConfig();

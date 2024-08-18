@@ -2,7 +2,6 @@ package me.fedox.viewerrun.utils;
 
 public class Constants {
 
-
     /**
      * General
      */

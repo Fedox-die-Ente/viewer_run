@@ -16,10 +16,20 @@ import static me.fedox.viewerrun.utils.TimeUtils.formatTime;
 public class EnderDragonShitListener implements Listener {
     private final VRModel model;
 
+    /**
+     * Constructor for EnderDragonShitListener.
+     *
+     * @param model the VRModel instance used to manage the event state
+     */
     public EnderDragonShitListener(VRModel model) {
         this.model = model;
     }
 
+    /**
+     * Event handler for when an Ender Dragon dies.
+     *
+     * @param e the EntityDeathEvent
+     */
     @EventHandler
     public void onEnderDragonShit(EntityDeathEvent e) {
         if(e.getEntity() instanceof EnderDragon) {

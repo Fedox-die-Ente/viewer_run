@@ -12,11 +12,22 @@ public class PlayerQuitListener implements Listener {
     private final QueueWorker queueWorker;
     private final VRModel model;
 
+    /**
+     * Constructor for PlayerQuitListener.
+     *
+     * @param queueWorker the QueueWorker instance used to manage the queue
+     * @param model the VRModel instance used to manage player states
+     */
     public PlayerQuitListener(QueueWorker queueWorker, VRModel model) {
         this.queueWorker = queueWorker;
         this.model = model;
     }
 
+    /**
+     * Event handler for when a player quits the server.
+     *
+     * @param e the PlayerQuitEvent
+     */
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
         e.setQuitMessage("§8[§c-§8] §7" + e.getPlayer().getName());

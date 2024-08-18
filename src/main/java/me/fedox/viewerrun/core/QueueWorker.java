@@ -27,6 +27,12 @@ public class QueueWorker {
     private boolean running;
     private int taskId;
 
+    /**
+     * Constructor for QueueWorker.
+     *
+     * @param plugin the ViewerRun plugin instance
+     * @param model the VRModel instance used to manage the event state
+     */
     public QueueWorker(ViewerRun plugin, VRModel model) {
         this.plugin = plugin;
         this.model = model;
@@ -45,8 +51,8 @@ public class QueueWorker {
     }
 
     /**
-     * Start the queue rotation scheduler
-     * Runs every {@link Constants#DEFAULT_QUEUE_ROTATION_TIME} ticks
+     * Start the queue rotation scheduler.
+     * Runs every {@link Constants#DEFAULT_QUEUE_ROTATION_TIME} ticks.
      */
     public void start() {
         running = true;
@@ -63,7 +69,7 @@ public class QueueWorker {
     }
 
     /**
-     * Restart the queue rotation scheduler
+     * Restart the queue rotation scheduler.
      */
     public void restart() {
         stop();
@@ -71,7 +77,7 @@ public class QueueWorker {
     }
 
     /**
-     * Stop the queue rotation scheduler
+     * Stop the queue rotation scheduler.
      */
     public void stop() {
         if(!running) {
@@ -83,7 +89,8 @@ public class QueueWorker {
     }
 
     /**
-     * Get the players in the queue
+     * Get the players in the queue.
+     *
      * @return list of players
      */
     public List<Player> getPlayers() {
@@ -91,7 +98,8 @@ public class QueueWorker {
     }
 
     /**
-     * Add a player to the queue
+     * Add a player to the queue.
+     *
      * @param player the player to add to the queue
      */
     public void addPlayer(Player player) {
@@ -99,7 +107,8 @@ public class QueueWorker {
     }
 
     /**
-     * Remove a player from the queue
+     * Remove a player from the queue.
+     *
      * @param player the player to remove from the queue
      */
     public void removePlayer(Player player) {
@@ -111,14 +120,14 @@ public class QueueWorker {
     }
 
     /**
-     * Selects a new player from the queue
+     * Selects a new player from the queue.
      */
     public void rotate() {
         debug("Neuer Spieler wird ausgewählt..");
 
         var cPlayers = new ArrayList<>(players.stream()
-                        .filter(p -> !alreadySelectedPlayers.contains(p))
-                        .toList());
+                .filter(p -> !alreadySelectedPlayers.contains(p))
+                .toList());
 
         if(cPlayers.isEmpty()) {
             alreadySelectedPlayers.clear();

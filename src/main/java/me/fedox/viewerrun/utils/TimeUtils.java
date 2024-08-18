@@ -1,6 +1,13 @@
 package me.fedox.viewerrun.utils;
 
 public class TimeUtils {
+
+    /**
+     * Formats a given time in seconds into a human-readable string.
+     *
+     * @param totalSeconds the total time in seconds to be formatted
+     * @return a formatted time string in the format "D:HH:MM:SS" or "HH:MM:SS" or "MM:SS"
+     */
     public static String formatTime(long totalSeconds) {
         long days = totalSeconds / 86400;
         long hours = (totalSeconds % 86400) / 3600;

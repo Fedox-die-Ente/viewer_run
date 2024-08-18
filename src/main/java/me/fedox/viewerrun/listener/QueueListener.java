@@ -19,10 +19,20 @@ import static org.bukkit.GameMode.CREATIVE;
 public class QueueListener implements Listener {
     private final VRModel model;
 
+    /**
+     * Constructor for QueueListener.
+     *
+     * @param model the VRModel instance used to manage player states
+     */
     public QueueListener(VRModel model) {
         this.model = model;
     }
 
+    /**
+     * Event handler for when an entity takes damage.
+     *
+     * @param e the EntityDamageEvent
+     */
     @EventHandler
     public void onDamage(EntityDamageEvent e) {
         if(e.getEntity() instanceof Player player) {
@@ -34,6 +44,11 @@ public class QueueListener implements Listener {
         }
     }
 
+    /**
+     * Event handler for when an entity is damaged by another entity.
+     *
+     * @param e the EntityDamageByEntityEvent
+     */
     @EventHandler
     public void onDamageByEntity(EntityDamageByEntityEvent e) {
         if(e.getDamager() instanceof Player player) {
@@ -46,14 +61,23 @@ public class QueueListener implements Listener {
 
     }
 
+    /**
+     * Event handler for when the creator is damaged by another player.
+     *
+     * @param e the EntityDamageByEntityEvent
+     */
     @EventHandler
     public void onDamageByEntityFromFedox(EntityDamageByEntityEvent e) {
-       if (e.getEntity().equals(model.getCreator()) && e.getDamager() instanceof Player) {
-           e.setCancelled(true);
-       }
+        if (e.getEntity().equals(model.getCreator()) && e.getDamager() instanceof Player) {
+            e.setCancelled(true);
+        }
     }
 
-
+    /**
+     * Event handler for when a player's food level changes.
+     *
+     * @param e the FoodLevelChangeEvent
+     */
     @EventHandler
     public void onFoodChanged(FoodLevelChangeEvent e) {
         if(e.getFoodLevel() < 20) {
@@ -65,6 +89,11 @@ public class QueueListener implements Listener {
         }
     }
 
+    /**
+     * Event handler for when a block is placed.
+     *
+     * @param e the BlockPlaceEvent
+     */
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
         if(e.getPlayer().getGameMode().equals(CREATIVE)) {
@@ -78,6 +107,11 @@ public class QueueListener implements Listener {
         e.setCancelled(true);
     }
 
+    /**
+     * Event handler for when a block is broken.
+     *
+     * @param e the BlockBreakEvent
+     */
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         if(e.getPlayer().getGameMode().equals(CREATIVE)) {
@@ -91,6 +125,11 @@ public class QueueListener implements Listener {
         e.setCancelled(true);
     }
 
+    /**
+     * Event handler for when an entity interacts with the world.
+     *
+     * @param e the EntityInteractEvent
+     */
     @EventHandler
     public void onInteract(EntityInteractEvent e) {
         if(e.getEntity() instanceof Player player) {
@@ -106,6 +145,11 @@ public class QueueListener implements Listener {
         }
     }
 
+    /**
+     * Event handler for when a player respawns.
+     *
+     * @param e the PlayerRespawnEvent
+     */
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e) {
         e.setRespawnLocation(getSpawnLocation(ViewerRun.getInstance()));

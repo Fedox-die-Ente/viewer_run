@@ -8,14 +8,31 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Command executor for the queue command in the ViewerRun plugin.
+ */
 public class QueueCommand implements CommandExecutor {
 
     private final QueueWorker queueWorker;
 
+    /**
+     * Constructs a QueueCommand with the specified QueueWorker.
+     *
+     * @param queueWorker the QueueWorker instance
+     */
     public QueueCommand(QueueWorker queueWorker) {
         this.queueWorker = queueWorker;
     }
 
+    /**
+     * Executes the queue command.
+     *
+     * @param commandSender the sender of the command
+     * @param command the command that was executed
+     * @param s the alias of the command that was used
+     * @param args the arguments passed to the command
+     * @return true if the command was successful, false otherwise
+     */
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (!(commandSender instanceof Player player)) {

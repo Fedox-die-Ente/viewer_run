@@ -6,7 +6,6 @@ import me.fedox.viewerrun.core.VRModel;
 import me.fedox.viewerrun.utils.LocationUtils;
 import org.bukkit.inventory.ItemStack;
 
-
 import static java.util.Objects.nonNull;
 import static me.fedox.viewerrun.utils.Constants.*;
 import static me.fedox.viewerrun.utils.LocationUtils.saveLocation;
@@ -14,7 +13,17 @@ import static me.fedox.viewerrun.utils.LocationUtils.teleportToLocation;
 import static me.fedox.viewerrun.utils.PlayerUtils.getMaxHealth;
 import static me.fedox.viewerrun.utils.PlayerUtils.setMaxHealth;
 
+/**
+ * Handles saving and loading data for the VRModel.
+ */
 public class SaveHandler {
+
+    /**
+     * Saves the current state of the VRModel to the plugin's configuration.
+     *
+     * @param plugin the ViewerRun plugin instance
+     * @param model the VRModel instance to save
+     */
     public static void saveData(ViewerRun plugin, VRModel model) {
         plugin.reloadConfig();
         var conf = plugin.getConfig();
@@ -40,10 +49,15 @@ public class SaveHandler {
             saveLocation(plugin, CONFIG_VIEWER_LOCATION, viewer.getLocation());
         }
 
-
         plugin.saveConfig();
     }
 
+    /**
+     * Loads the saved state of the VRModel from the plugin's configuration.
+     *
+     * @param plugin the ViewerRun plugin instance
+     * @param model the VRModel instance to load
+     */
     public static void loadData(ViewerRun plugin, VRModel model) {
         plugin.reloadConfig();
         var conf = plugin.getConfig();
