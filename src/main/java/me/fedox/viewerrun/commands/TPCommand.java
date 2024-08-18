@@ -27,6 +27,23 @@ public class TPCommand implements CommandExecutor {
 
         var target = args[0];
 
+        if (args.length > 1) {
+            var target2 = args[1];
+
+            Player targetPlayer = player.getServer().getPlayer(target);
+            Player targetPlayer2 = player.getServer().getPlayer(target2);
+
+            if (targetPlayer == null || targetPlayer2 == null) {
+                sender.sendMessage(Constants.PREFIX + "§cDieser Spieler ist nicht online.");
+                return false;
+            }
+
+            targetPlayer.teleport(targetPlayer2);
+            sender.sendMessage(Constants.PREFIX + "§7Teleportiere §a" + targetPlayer.getName() + " §7zu §a" + targetPlayer2.getName());
+
+            return true;
+        }
+
         Player targetPlayer = player.getServer().getPlayer(target);
 
         if (targetPlayer == null) {

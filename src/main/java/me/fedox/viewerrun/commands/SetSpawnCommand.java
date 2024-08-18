@@ -30,7 +30,8 @@ public class SetSpawnCommand implements CommandExecutor {
                 saveLocation(plugin, CONFIG_LOCATION, location);
                 player.sendMessage(Constants.PREFIX + "§7Du hast den §a§lSpawn §7gesetzt");
             } else {
-                sender.sendMessage("§cDu hast keine Rechte");
+                sender.sendMessage(Constants.PREFIX + "§cDu hast keine Rechte dazu.");
+
             }
         }
 

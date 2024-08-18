@@ -114,7 +114,7 @@ public class QueueWorker {
      * Selects a new player from the queue
      */
     public void rotate() {
-        debug("Rotating player...");
+        debug("Neuer Spieler wird ausgewählt..");
 
         var cPlayers = new ArrayList<>(players.stream()
                         .filter(p -> !alreadySelectedPlayers.contains(p))
@@ -130,14 +130,14 @@ public class QueueWorker {
         Collections.shuffle(cPlayers);
 
         if(cPlayers.isEmpty()) {
-            debug("No players in queue");
+            debug("Keine Spieler in der Warteschlange.");
             return;
         }
 
         final var player = cPlayers.getFirst();
         model.setViewer(player);
 
-        debug("Selected player: " + player.getName() + " as viewer.");
+        debug(player.getName() + " wurde ausgewählt.");
 
         // Make sure the player is not selected again
         alreadySelectedPlayers.add(player);

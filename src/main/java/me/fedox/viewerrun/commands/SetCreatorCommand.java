@@ -22,12 +22,12 @@ public class SetCreatorCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
         if (!commandSender.hasPermission("viewerrun.setcreator")) {
-            commandSender.sendMessage("§cDu hast keine Rechte");
+            commandSender.sendMessage(Constants.PREFIX + "§cDu hast keine Rechte dazu.");
             return true;
         }
 
         if (strings.length != 1) {
-            commandSender.sendMessage("§cBenutzung: /setcreator <Spieler>");
+            commandSender.sendMessage(Constants.PREFIX + "§cBitte gib einen Spieler an");
             return true;
         }
 
@@ -35,7 +35,7 @@ public class SetCreatorCommand implements CommandExecutor {
         ViewerRun.setCreatorUUID(uuid);
 
         if (ViewerRun.getCreatorUUID() == null) {
-            commandSender.sendMessage("§cDer Spieler ist nicht online");
+            commandSender.sendMessage(Constants.PREFIX + "§cDer Spieler konnte nicht gefunden werden");
             return true;
         }
 
