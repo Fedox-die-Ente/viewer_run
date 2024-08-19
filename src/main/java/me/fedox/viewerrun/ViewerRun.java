@@ -14,32 +14,26 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
 
-import static me.fedox.viewerrun.utils.Constants.CONFIG_CREATOR;
 import static me.fedox.viewerrun.utils.Constants.CONFIG_CREATOR_UUID;
 
 /**
- * Main class for the ViewerRun plugin.
- * Extends JavaPlugin to integrate with the Bukkit API.
+ * Main class for the ViewerRun plugin. Extends JavaPlugin to integrate with the Bukkit API.
  */
 public final class ViewerRun extends JavaPlugin {
     @Getter
-    private static ViewerRun instance;
-
-    private VRModel model;
-
-    private QueueWorker queueWorker;
-
+    @Setter
+    public static  String      creatorUUID;
     @Getter
     @Setter
-    public static String creatorUUID;
-
+    public static  Player      viewer;
     @Getter
-    @Setter
-    public static Player viewer;
+    private static ViewerRun   instance;
+    private        VRModel     model;
+    private        QueueWorker queueWorker;
 
     /**
-     * Called when the plugin is enabled.
-     * Initializes the plugin, loads the configuration, and registers commands and listeners.
+     * Called when the plugin is enabled. Initializes the plugin, loads the configuration, and registers commands and
+     * listeners.
      */
     @Override
     public void onEnable() {
@@ -48,14 +42,13 @@ public final class ViewerRun extends JavaPlugin {
         queueWorker = new QueueWorker(this, model);
 
         new PlayerSwitchHandler(this, model);
-        new Timer(this, model);
 
         loadConfig();
 
         if (getConfig().get(CONFIG_CREATOR_UUID) == null) {
             getLogger().log(Level.WARNING, "No creator set");
         } else {
-            String uuid = getConfig().getString(CONFIG_CREATOR_UUID);
+            final String uuid = getConfig().getString(CONFIG_CREATOR_UUID);
             setCreatorUUID(uuid);
         }
 
@@ -67,8 +60,7 @@ public final class ViewerRun extends JavaPlugin {
     }
 
     /**
-     * Called when the plugin is disabled.
-     * Contains logic for shutting down the plugin.
+     * Called when the plugin is disabled. Contains logic for shutting down the plugin.
      */
     @Override
     public void onDisable() {
@@ -79,7 +71,7 @@ public final class ViewerRun extends JavaPlugin {
      * Registers all commands for the plugin.
      */
     private void registerCommands() {
-        getCommand("setcreator").setExecutor(new SetCreatorCommand(this));
+        getCommand("setcreator").setExecutor(new SetCreatorCommand(this, model));
         getCommand("start").setExecutor(new StartCommand(model));
         getCommand("queue").setExecutor(new QueueCommand(queueWorker));
         getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
@@ -94,8 +86,9 @@ public final class ViewerRun extends JavaPlugin {
      * Registers all event listeners for the plugin.
      */
     private void registerListener() {
-        var pm = Bukkit.getPluginManager();
+        final var pm = Bukkit.getPluginManager();
 
+        pm.registerEvents(new Timer(this, model), this);
         pm.registerEvents(new PlayerJoinListener(this, model), this);
         pm.registerEvents(new PlayerQuitListener(queueWorker, model), this);
         pm.registerEvents(new PlayerDeathListener(this, queueWorker, model), this);
@@ -104,8 +97,7 @@ public final class ViewerRun extends JavaPlugin {
     }
 
     /**
-     * Loads the plugin configuration.
-     * Copies default values and saves the configuration.
+     * Loads the plugin configuration. Copies default values and saves the configuration.
      */
     private void loadConfig() {
         getConfig().options().copyDefaults(true);

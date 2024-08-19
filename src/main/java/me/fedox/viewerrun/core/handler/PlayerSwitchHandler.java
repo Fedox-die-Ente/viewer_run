@@ -24,23 +24,23 @@ public class PlayerSwitchHandler {
      * Constructs a PlayerSwitchHandler and registers a PlayerChangedListener to the VRModel.
      *
      * @param plugin the ViewerRun plugin instance
-     * @param model the VRModel instance
+     * @param model  the VRModel instance
      */
-    public PlayerSwitchHandler(ViewerRun plugin, VRModel model) {
+    public PlayerSwitchHandler(final ViewerRun plugin, final VRModel model) {
         model.addListener(new PlayerChangedListener() {
             @Override
-            public void onCreatorChanged(Player creator) {
+            public void onCreatorChanged(final Player creator) {
                 // No implementation needed for creator change
             }
 
             @Override
-            public void onViewerChanged(Player lastViewer, Player viewer) {
-                if(nonNull(lastViewer)) {
-                    if(viewer == lastViewer) {
+            public void onViewerChanged(final Player lastViewer, final Player viewer) {
+                if (nonNull(lastViewer)) {
+                    if (viewer == lastViewer) {
                         return;
                     }
 
-                    if(nonNull(viewer)) {
+                    if (nonNull(viewer)) {
                         syncInventory(lastViewer, viewer);
                         syncStats(lastViewer, viewer);
                         syncPotionEffects(lastViewer, viewer);
@@ -50,19 +50,21 @@ public class PlayerSwitchHandler {
 
                     teleportToSpawn(plugin, lastViewer);
                 } else {
-                    if(nonNull(model.getCreator())) {
-                        var viewerCache = getViewerCache();
-                        if(nonNull(viewerCache)) {
-                            debug("Use cached viewer data.");
+                    if (nonNull(model.getCreator())) {
+                        final var viewerCache = getViewerCache();
+                        if (nonNull(viewerCache)) {
+                            debug("Benutze gecachte Viewer-Daten.");
 
                             viewer.getInventory().setContents(viewerCache.items());
                             viewer.setHealth(viewerCache.health());
                             setMaxHealth(viewer, viewerCache.maxHealth());
                             viewer.setSaturation(viewerCache.food());
+                            viewer.setLevel(viewerCache.level());
                             viewer.teleport(viewerCache.location());
 
                             setViewerCache(null);
                         } else {
+                            debug("Keine gecachten Viewer-Daten gefunden. Teleportiere zum Creator.");
                             viewer.teleport(model.getCreator().getLocation());
                         }
                     }
@@ -75,9 +77,9 @@ public class PlayerSwitchHandler {
      * Synchronizes the inventory between the last viewer and the new viewer.
      *
      * @param lastViewer the previous viewer player
-     * @param viewer the new viewer player
+     * @param viewer     the new viewer player
      */
-    private void syncInventory(Player lastViewer, Player viewer) {
+    private void syncInventory(final Player lastViewer, final Player viewer) {
         viewer.getInventory().clear();
 
         final var lastViewerInv = lastViewer.getInventory();
@@ -87,37 +89,39 @@ public class PlayerSwitchHandler {
 
         lastViewer.getInventory().clear();
 
-        debug("Switched inventory between " + lastViewer.getName() + " and " + viewer.getName() + " (new viewer)");
+        debug("Inventario zwischen " + lastViewer.getName() + " und " + viewer.getName() + " (neuer Viewer) getauscht");
     }
 
     /**
      * Synchronizes the stats (health and food level) between the last viewer and the new viewer.
      *
      * @param lastViewer the previous viewer player
-     * @param viewer the new viewer player
+     * @param viewer     the new viewer player
      */
-    private void syncStats(Player lastViewer, Player viewer) {
+    private void syncStats(final Player lastViewer, final Player viewer) {
         viewer.setFoodLevel(lastViewer.getFoodLevel());
         setMaxHealth(viewer, getMaxHealth(lastViewer));
         viewer.setHealth(lastViewer.getHealth());
+        viewer.setLevel(lastViewer.getLevel());
 
         lastViewer.setFoodLevel(20);
         setMaxHealth(lastViewer, 20);
         lastViewer.setHealth(20);
+        lastViewer.setLevel(0);
 
-        debug("Switched health between " + lastViewer.getName() + " and " + viewer.getName() + " (new viewer)");
+        debug("Leben zwischen " + lastViewer.getName() + " und " + viewer.getName() + " (neuer Viewer) getauscht");
     }
 
     /**
      * Synchronizes the potion effects between the last viewer and the new viewer.
      *
      * @param lastViewer the previous viewer player
-     * @param viewer the new viewer player
+     * @param viewer     the new viewer player
      */
-    private void syncPotionEffects(Player lastViewer, Player viewer) {
+    private void syncPotionEffects(final Player lastViewer, final Player viewer) {
         new ArrayList<>(lastViewer.getActivePotionEffects()).forEach(viewer::addPotionEffect);
         lastViewer.clearActivePotionEffects();
 
-        debug("Switched potion effects between " + lastViewer.getName() + " and " + viewer.getName() + " (new viewer)");
+        debug("Potioneffekte zwischen " + lastViewer.getName() + " und " + viewer.getName() + " (neuer Viewer) getauscht");
     }
 }

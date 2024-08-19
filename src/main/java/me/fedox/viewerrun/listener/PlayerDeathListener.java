@@ -14,18 +14,18 @@ import static me.fedox.viewerrun.utils.PlayerUtils.getMaxHealth;
 import static me.fedox.viewerrun.utils.PlayerUtils.setMaxHealth;
 
 public class PlayerDeathListener implements Listener {
-    private final ViewerRun plugin;
+    private final ViewerRun   plugin;
     private final QueueWorker queueWorker;
-    private final VRModel model;
+    private final VRModel     model;
 
     /**
      * Constructor for PlayerDeathListener.
      *
-     * @param plugin the ViewerRun plugin instance
+     * @param plugin      the ViewerRun plugin instance
      * @param queueWorker the QueueWorker instance used to manage the queue
-     * @param model the VRModel instance used to manage player states
+     * @param model       the VRModel instance used to manage player states
      */
-    public PlayerDeathListener(ViewerRun plugin, QueueWorker queueWorker, VRModel model) {
+    public PlayerDeathListener(final ViewerRun plugin, final QueueWorker queueWorker, final VRModel model) {
         this.plugin = plugin;
         this.queueWorker = queueWorker;
         this.model = model;
@@ -37,11 +37,11 @@ public class PlayerDeathListener implements Listener {
      * @param e the PlayerDeathEvent
      */
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent e) {
-        var creator = model.getCreator();
+    public void onPlayerDeath(final PlayerDeathEvent e) {
+        final var creator = model.getCreator();
 
         // Check if the player who died is the viewer
-        if(e.getPlayer().equals(model.getViewer())) {
+        if (e.getPlayer().equals(model.getViewer())) {
             saveData(plugin, model);
 
             // Decrease the creator's max health by 2
@@ -49,13 +49,14 @@ public class PlayerDeathListener implements Listener {
 
             model.setViewer(null);
             e.getPlayer().getInventory().clear();
+            e.getDrops().clear();
 
             queueWorker.restart();
             queueWorker.rotate();
         }
 
         // Check if the player who died is the creator
-        if(e.getPlayer().equals(creator)) {
+        if (e.getPlayer().equals(creator)) {
             model.setEventRunning(false);
         }
     }
@@ -66,7 +67,7 @@ public class PlayerDeathListener implements Listener {
      * @param e the PlayerRespawnEvent
      */
     @EventHandler
-    public void onRespawn(PlayerRespawnEvent e) {
+    public void onRespawn(final PlayerRespawnEvent e) {
         e.setRespawnLocation(getSpawnLocation(plugin));
     }
 }

@@ -1,7 +1,6 @@
 package me.fedox.viewerrun.core.handler;
 
 import me.fedox.viewerrun.ViewerRun;
-import me.fedox.viewerrun.core.QueueWorker;
 import me.fedox.viewerrun.core.VRModel;
 import me.fedox.viewerrun.utils.LocationUtils;
 import org.bukkit.inventory.ItemStack;
@@ -22,30 +21,32 @@ public class SaveHandler {
      * Saves the current state of the VRModel to the plugin's configuration.
      *
      * @param plugin the ViewerRun plugin instance
-     * @param model the VRModel instance to save
+     * @param model  the VRModel instance to save
      */
-    public static void saveData(ViewerRun plugin, VRModel model) {
+    public static void saveData(final ViewerRun plugin, final VRModel model) {
         plugin.reloadConfig();
-        var conf = plugin.getConfig();
+        final var conf = plugin.getConfig();
 
-        var creator = model.getCreator();
-        var viewer = model.getViewer();
+        final var creator = model.getCreator();
+        final var viewer = model.getViewer();
 
         conf.set(CONFIG_CURRENT_RUN_TIME, model.getCurrentTime());
 
-        if(nonNull(creator)) {
+        if (nonNull(creator)) {
             conf.set(CONFIG_CREATOR_INV, creator.getInventory().getContents());
             conf.set(CONFIG_CREATOR_HEALTH, creator.getHealth());
             conf.set(CONFIG_CREATOR_MAXHEALTH, getMaxHealth(creator));
             conf.set(CONFIG_CREATOR_FOOD, creator.getFoodLevel());
+            conf.set(CONFIG_CREATOR_LEVEL, creator.getLevel());
             saveLocation(plugin, CONFIG_CREATOR_LOCATION, creator.getLocation());
         }
 
-        if(nonNull(viewer)) {
+        if (nonNull(viewer)) {
             conf.set(CONFIG_VIEWER_INV, viewer.getInventory().getContents());
             conf.set(CONFIG_VIEWER_HEALTH, viewer.getHealth());
             conf.set(CONFIG_VIEWER_MAXHEALTH, getMaxHealth(viewer));
             conf.set(CONFIG_VIEWER_FOOD, viewer.getFoodLevel());
+            conf.set(CONFIG_VIEWER_LEVEL, viewer.getLevel());
             saveLocation(plugin, CONFIG_VIEWER_LOCATION, viewer.getLocation());
         }
 
@@ -56,25 +57,26 @@ public class SaveHandler {
      * Loads the saved state of the VRModel from the plugin's configuration.
      *
      * @param plugin the ViewerRun plugin instance
-     * @param model the VRModel instance to load
+     * @param model  the VRModel instance to load
      */
-    public static void loadData(ViewerRun plugin, VRModel model) {
+    public static void loadData(final ViewerRun plugin, final VRModel model) {
         plugin.reloadConfig();
-        var conf = plugin.getConfig();
+        final var conf = plugin.getConfig();
 
-        var creator = model.getCreator();
+        final var creator = model.getCreator();
 
         model.setCurrentTime(conf.getInt(CONFIG_CURRENT_RUN_TIME));
 
-        if(nonNull(creator)) {
+        if (nonNull(creator)) {
             creator.getInventory().setContents(conf.getList(CONFIG_CREATOR_INV).toArray(ItemStack[]::new));
             creator.setHealth(conf.getDouble(CONFIG_CREATOR_HEALTH));
             setMaxHealth(creator, conf.getDouble(CONFIG_CREATOR_MAXHEALTH));
             creator.setFoodLevel(conf.getInt(CONFIG_CREATOR_FOOD));
+            creator.setLevel(conf.getInt(CONFIG_CREATOR_LEVEL));
             teleportToLocation(plugin, CONFIG_CREATOR_LOCATION, creator);
         }
 
-        var location = LocationUtils.asLocation(plugin, CONFIG_VIEWER_LOCATION);
-        CacheHandler.setViewerCache(new CacheHandler.ViewerCache(conf.getList(CONFIG_VIEWER_INV).toArray(ItemStack[]::new), conf.getDouble(CONFIG_VIEWER_MAXHEALTH), conf.getDouble(CONFIG_VIEWER_HEALTH), conf.getInt(CONFIG_VIEWER_FOOD), location));
+        final var location = LocationUtils.asLocation(plugin, CONFIG_VIEWER_LOCATION);
+        CacheHandler.setViewerCache(new CacheHandler.ViewerCache(conf.getList(CONFIG_VIEWER_INV).toArray(ItemStack[]::new), conf.getDouble(CONFIG_VIEWER_MAXHEALTH), conf.getDouble(CONFIG_VIEWER_HEALTH), conf.getInt(CONFIG_VIEWER_FOOD), conf.getInt(CONFIG_VIEWER_LEVEL), location));
     }
 }
