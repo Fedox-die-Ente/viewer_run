@@ -11,5 +11,7 @@ commands:
   pause:
   continue:
   forceskip:
+    aliases:
+      - skip
   gm:
   tp:

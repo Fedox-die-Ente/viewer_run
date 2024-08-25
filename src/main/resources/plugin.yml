@@ -1,5 +1,5 @@
 name: ViewerRun
-version: '1.0'
+version: '2.0'
 main: me.fedox.viewerrun.ViewerRun
 api-version: '1.21'
 
