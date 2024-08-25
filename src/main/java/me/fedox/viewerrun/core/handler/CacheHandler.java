@@ -1,7 +1,5 @@
 package me.fedox.viewerrun.core.handler;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
@@ -9,17 +7,6 @@ import org.bukkit.inventory.ItemStack;
  * Handles caching of viewer data in the VRModel.
  */
 public class CacheHandler {
-
-    /**
-     * Record to store the cached data of a viewer.
-     *
-     * @param items the inventory items of the viewer
-     * @param maxHealth the maximum health of the viewer
-     * @param health the current health of the viewer
-     * @param food the food level of the viewer
-     * @param location the location of the viewer
-     */
-    public static record ViewerCache(ItemStack[] items, double maxHealth, double health, int food, Location location) {}
 
     private static ViewerCache viewerCache;
 
@@ -37,7 +24,21 @@ public class CacheHandler {
      *
      * @param viewerCache the cached data to set
      */
-    public static void setViewerCache(ViewerCache viewerCache) {
+    public static void setViewerCache(final ViewerCache viewerCache) {
         CacheHandler.viewerCache = viewerCache;
     }
+
+    /**
+     * Record to store the cached data of a viewer.
+     *
+     * @param items     the inventory items of the viewer
+     * @param maxHealth the maximum health of the viewer
+     * @param health    the current health of the viewer
+     * @param food      the food level of the viewer
+     * @param level     the experience level of the viewer
+     * @param location  the location of the viewer
+     */
+    public record ViewerCache(
+            ItemStack[] items, double maxHealth, double health, int food, int level, Location location
+    ) {}
 }

@@ -12,15 +12,15 @@ import static me.fedox.viewerrun.utils.PlayerUtils.setMaxHealth;
 
 public class PlayerJoinListener implements Listener {
     private final ViewerRun plugin;
-    private final VRModel model;
+    private final VRModel   model;
 
     /**
      * Constructor for PlayerJoinListener.
      *
      * @param plugin the ViewerRun plugin instance
-     * @param model the VRModel instance used to manage player states
+     * @param model  the VRModel instance used to manage player states
      */
-    public PlayerJoinListener(ViewerRun plugin, VRModel model) {
+    public PlayerJoinListener(final ViewerRun plugin, final VRModel model) {
         this.plugin = plugin;
         this.model = model;
     }
@@ -31,8 +31,8 @@ public class PlayerJoinListener implements Listener {
      * @param e the PlayerJoinEvent
      */
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        var player = e.getPlayer();
+    public void onPlayerJoin(final PlayerJoinEvent e) {
+        final var player = e.getPlayer();
 
         // Send a welcome message to the player
         player.sendMessage(PREFIX + "§7Willkommen beim §aViewerRun §7Event!");
@@ -40,11 +40,11 @@ public class PlayerJoinListener implements Listener {
         e.setJoinMessage("§8[§a+§8] §7" + player.getName());
 
         // Check if the player is the creator
-        if (player.getUniqueId().toString().equals(plugin.getCreatorUUID())) {
+        if (player.getUniqueId().toString().equals(ViewerRun.getCreatorUUID())) {
             model.setCreator(player);
 
             // Set the player's max health if the event is not running
-            if(!model.isEventRunning()) {
+            if (!model.isEventRunning()) {
                 setMaxHealth(player, 20);
             }
 
